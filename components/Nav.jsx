@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { signIn, signOut, useSession, getProviders } from "next-auth/react";
 
 const Nav = () => {
@@ -12,21 +12,18 @@ const Nav = () => {
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
   useEffect(() => {
-    const setUpProviders = async () => {
-      const response = await getProviders();
-
-      setProviders(response);
-    };
-
-    setUpProviders();
+    (async () => {
+      const res = await getProviders();
+      setProviders(res);
+    })();
   }, []);
 
   return (
-    <nav className="flex-between w-full md-16 pt-3">
+    <nav className="flex-between w-full mb-16 pt-3">
       <Link href="/" className="flex gap-2 flex-center">
         <Image
           src="/assets/images/logo.svg"
-          alt="Promptopia Logo"
+          alt="logo"
           width={30}
           height={30}
           className="object-contain"
@@ -63,10 +60,12 @@ const Nav = () => {
                 <button
                   type="button"
                   key={provider.name}
-                  onClick={() => signIn(provider.id)}
-                  className="black_btn "
+                  onClick={() => {
+                    signIn(provider.id);
+                  }}
+                  className="black_btn"
                 >
-                  Sign In
+                  Sign in
                 </button>
               ))}
           </>
@@ -83,7 +82,7 @@ const Nav = () => {
               height={37}
               className="rounded-full"
               alt="profile"
-              onClick={() => setToggleDropdown((prev) => !prev)}
+              onClick={() => setToggleDropdown(!toggleDropdown)}
             />
 
             {toggleDropdown && (
@@ -122,10 +121,12 @@ const Nav = () => {
                 <button
                   type="button"
                   key={provider.name}
-                  onClick={() => signIn(provider.id)}
-                  className="black_btn "
+                  onClick={() => {
+                    signIn(provider.id);
+                  }}
+                  className="black_btn"
                 >
-                  Sign In
+                  Sign in
                 </button>
               ))}
           </>
